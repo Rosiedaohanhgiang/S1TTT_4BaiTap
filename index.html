@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop: Nghệ Thuật Chạm - HoanTT Master Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+        .glass-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); border: 1px solid #e2e8f0; }
+        .input-focus { transition: all 0.2s ease; border: 1px solid #cbd5e1; }
+        .input-focus:focus { border-color: #ec4899; box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1); outline: none; }
+        
+        /* Tab Styles */
+        .tab-active { color: #ec4899; border-bottom: 3px solid #ec4899; background: #fff1f2; }
+        .sub-tab-active { background-color: white; color: #ec4899 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); font-weight: 800; }
+        
+        .timer-low { color: #ef4444; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .trainer-section { border: 2px dashed #94a3b8; background-color: #f1f5f9; position: relative; }
+        .trainer-tag { position: absolute; top: -12px; left: 24px; background: #475569; color: white; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        
+        .rubric-cell { cursor: pointer; transition: all 0.2s ease; font-size: 11px; vertical-align: top; }
+        .rubric-active { background-color: #fecaca !important; border-color: #ef4444 !important; font-weight: 700; color: #b91c1c; }
+        
+        .example-box { background: #ffffff; border: 1px solid #e2e8f0; padding: 1.5rem; border-radius: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .quote-box { border-left: 4px solid #ec4899; background: #fff1f2; padding: 1rem; font-style: italic; font-size: 13px; }
+        
+        /* Animation */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="p-2 md:p-6 min-h-screen">
+    <div id="app" class="max-w-6xl mx-auto space-y-10">
+        
+        <!-- Header & Main Navigation -->
+        <header class="text-center sticky top-0 z-50 py-4 bg-[#f8fafc]/90 backdrop-blur-md">
+            <div class="inline-flex bg-white p-1 rounded-2xl shadow-lg border border-slate-200 overflow-x-auto max-w-full">
+                <button onclick="switchTab('ex1')" id="btn-ex1" class="px-6 py-3 rounded-xl text-xs font-bold transition-all tab-active whitespace-nowrap">1. FAB (30S)</button>
+                <button onclick="switchTab('ex2')" id="btn-ex2" class="px-6 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 whitespace-nowrap">2. GLOSS (5M)</button>
+                <button onclick="switchTab('ex3')" id="btn-ex3" class="px-4 md:px-6 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 whitespace-nowrap uppercase">3. Fishbowl (Huấn luyện)</button>
+                <button onclick="switchTab('ex4')" id="btn-ex4" class="px-4 md:px-6 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 whitespace-nowrap uppercase">4. JIT (Chỉ việc)</button>
+            </div>
+            <div id="user-info" class="text-[9px] text-slate-400 font-mono mt-2 uppercase tracking-widest">Master Console Data Center • Syncing...</div>
+        </header>
+
+        <!-- BÀI TẬP 1: FAB (30 GIÂY) -->
+        <main id="tab-ex1" class="space-y-6 fade-in">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-black text-pink-600 uppercase italic tracking-tighter">30 Giây Chạm Đến Trái Tim</h1>
+                <p class="text-slate-500 text-sm">Chuyển hóa ngôn ngữ kỹ thuật thành thông điệp thấu cảm</p>
+            </div>
+
+            <!-- Sub Navigation -->
+            <div class="flex justify-center">
+                <div class="bg-slate-200 p-1 rounded-xl flex space-x-1 shadow-inner">
+                    <button onclick="switchSubTab('ex1', 'info')" id="btn-ex1-info" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase sub-tab-active">Minh họa & Ví dụ</button>
+                    <button onclick="switchSubTab('ex1', 'practice')" id="btn-ex1-practice" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase text-slate-600">Thực hành làm bài</button>
+                </div>
+            </div>
+
+            <!-- EX1 INFO -->
+            <div id="sub-ex1-info" class="space-y-8">
+                <section class="trainer-section rounded-[2rem] p-8 space-y-4 shadow-sm">
+                    <div class="trainer-tag">Kịch bản Master Trainer</div>
+                    <div class="text-sm text-slate-600 leading-relaxed space-y-4">
+                        <p><strong>Nỗi đau:</strong> Khi quá am hiểu sản phẩm, chúng ta dễ rơi vào "Điểm mù Chuyên gia", gây quá tải thông tin (Cognitive Overload). Khách hàng không mua "công thức hóa học", họ mua giải pháp.</p>
+                        <div class="quote-box">"Hôm nay, chúng ta sẽ học cách dịch Spec Sheet thành tiếng người."</div>
+                    </div>
+                </section>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="example-box space-y-4">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-2">Tư liệu kỹ thuật (Spec Sheet)</h3>
+                        <div class="bg-slate-900 rounded-2xl p-6 text-blue-300 font-mono text-xs leading-relaxed">
+                            <p class="text-pink-500 font-bold mb-2 uppercase tracking-tighter">// MamaCare New Series</p>
+                            <p>• Thành phần: B. infantis (10^9 CFU/liều) + FOS 500mg.</p>
+                            <p>• Cơ chế: Phân giải HMOs -> tạo SCFA -> giảm pH ruột.</p>
+                            <p>• Chỉ định: Cân bằng hệ vi sinh, giảm Colic & chướng bụng < 6 tháng.</p>
+                        </div>
+                    </div>
+                    <div class="example-box space-y-4">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-2">Ví dụ chuyển đổi FAB mẫu</h3>
+                        <div class="space-y-3">
+                            <p class="text-xs"><strong>F (Tính năng):</strong> Chứa lợi khuẩn Bifidobacterium infantis đặc chủng cho bé.</p>
+                            <p class="text-xs"><strong>A (Ưu điểm):</strong> Tương thích tự nhiên tuyệt đối với hệ tiêu hóa sơ sinh.</p>
+                            <p class="text-xs"><strong>B (Lợi ích):</strong> Giúp bụng bé êm ru, mẹ có thể chợp mắt ngủ ngon vào ban đêm.</p>
+                            <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-dashed border-slate-300 text-xs italic text-slate-500">
+                                "Dạ chào chị, em hiểu những đêm thức trắng vì bé quấy khóc chướng bụng mệt mỏi thế nào. Sản phẩm này giúp bụng bé êm ru tự nhiên, để mẹ được nghỉ ngơi thêm đôi chút chị ạ."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EX1 PRACTICE -->
+            <div id="sub-ex1-practice" class="hidden space-y-8">
+                <div class="glass-card rounded-[2.5rem] p-10 shadow-sm border-t-8 border-pink-500 space-y-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-pink-600 uppercase tracking-widest">F - Feature (Tính năng)</label>
+                            <textarea id="fab-feature" class="w-full p-4 rounded-2xl bg-slate-50 input-focus text-sm border-none shadow-inner h-32" placeholder="Chọn 1 chi tiết quan trọng nhất..."></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-blue-600 uppercase tracking-widest">A - Advantage (Ưu điểm)</label>
+                            <textarea id="fab-advantage" class="w-full p-4 rounded-2xl bg-slate-50 input-focus text-sm border-none shadow-inner h-32" placeholder="Nó hoạt động thế nào trong cơ thể?..."></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-green-600 uppercase tracking-widest">B - Benefit (Lợi ích)</label>
+                            <textarea id="fab-benefit" class="w-full p-4 rounded-2xl bg-slate-50 input-focus text-sm border-none shadow-inner h-32" placeholder="Khách hàng trút bỏ được gánh nặng gì?..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-10 pt-8 border-t border-slate-100">
+                        <div class="text-center space-y-4">
+                            <div id="timer1-display" class="text-6xl font-black font-mono text-slate-800 tracking-tighter">00:30</div>
+                            <button onclick="toggleTimer(30, 'timer1')" id="timer1-btn" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold uppercase text-xs tracking-widest shadow-xl active:scale-95 transition-all">Start 30s</button>
+                        </div>
+                        <div class="md:col-span-2 relative">
+                            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Kịch bản thực chiến (Tối đa 3-4 câu)</h3>
+                            <textarea id="script1" class="w-full p-6 rounded-[2rem] bg-white border border-pink-100 input-focus italic text-slate-700 leading-relaxed text-lg shadow-sm h-48" placeholder="Viết kịch bản của bạn tại đây..."></textarea>
+                            <div id="save-status-ex1" class="absolute bottom-4 right-6 text-[9px] font-black text-green-500 opacity-0 uppercase tracking-widest">Auto Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BÀI TẬP 2: GLOSS (5 PHÚT) -->
+        <main id="tab-ex2" class="hidden space-y-6 fade-in">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-black text-blue-600 uppercase italic tracking-tighter">Mở Đầu Bài Giảng "GLOSS"</h1>
+                <p class="text-slate-500 text-sm">5 Phút Thu Hút Mọi Ánh Nhìn</p>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="bg-slate-200 p-1 rounded-xl flex space-x-1 shadow-inner">
+                    <button onclick="switchSubTab('ex2', 'info')" id="btn-ex2-info" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase sub-tab-active">Mô hình & Ví dụ</button>
+                    <button onclick="switchSubTab('ex2', 'practice')" id="btn-ex2-practice" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase text-slate-600">Thực hành thiết kế</button>
+                </div>
+            </div>
+
+            <!-- EX2 INFO -->
+            <div id="sub-ex2-info" class="space-y-8">
+                <section class="trainer-section rounded-[2rem] p-8 space-y-6 shadow-sm">
+                    <div class="trainer-tag">Master Trainer Guide</div>
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <div class="space-y-4 text-sm text-slate-600">
+                            <p><strong>Cấu trúc GLOSS:</strong> Giúp giảng viên mở đầu gãy gọn, tự tin, kết nối cảm xúc. Tránh việc nói lan man hoặc lúng túng trong 5 phút đầu.</p>
+                            <div class="quote-box">"Chào chị A, chị B... Hôm nay chúng ta học bài... (Hơi lỗi thời rồi!). Hãy dùng GLOSS để 'kéo' nhân viên về hiện tại."</div>
+                        </div>
+                        <div class="bg-blue-900 rounded-[2rem] p-6 text-blue-100 text-[11px] leading-relaxed shadow-lg">
+                            <p class="font-bold text-blue-300 uppercase mb-3 border-b border-blue-700 pb-2">Ví dụ thực tế (Hair Restore Advanced)</p>
+                            <p><strong>G (Attention):</strong> "60% phụ nữ sau sinh lo rụng tóc hơn vóc dáng? Đây là cơ hội của chúng ta."</p>
+                            <p class="mt-2"><strong>L (Link):</strong> "Tuần trước học Vitamin, hôm nay là mảnh ghép mái tóc."</p>
+                            <p class="mt-2"><strong>O (Outcomes):</strong> "Kết thúc buổi này, các bạn liệt kê được 3 thành phần chính & tư vấn được combo."</p>
+                            <p class="mt-2"><strong>S (Structure):</strong> "3 phần: Kiến thức -> Demo -> Thực hành."</p>
+                            <p class="mt-2"><strong>S (Stimulate):</strong> "Nhóm thực hành tốt nhất sẽ nhận quà mẫu mới nhất."</p>
+                        </div>
+                    </div>
+                </section>
+                <div class="example-box p-8">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Master Tip cho từng bước</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="p-4 bg-red-50 rounded-2xl border border-red-100"><span class="text-red-700 font-bold text-xs">G:</span> <span class="text-[10px] block mt-1">Câu hỏi trăn trở, câu chuyện, số liệu.</span></div>
+                        <div class="p-4 bg-orange-50 rounded-2xl border border-orange-100"><span class="text-orange-700 font-bold text-xs">L:</span> <span class="text-[10px] block mt-1">Nối kiến thức cũ với bài hôm nay.</span></div>
+                        <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100"><span class="text-blue-700 font-bold text-xs">O:</span> <span class="text-[10px] block mt-1">Hành động đo lường được (LÀM được gì?).</span></div>
+                        <div class="p-4 bg-purple-50 rounded-2xl border border-purple-100"><span class="text-purple-700 font-bold text-xs">S:</span> <span class="text-[10px] block mt-1">Bản đồ lộ trình bài giảng.</span></div>
+                        <div class="p-4 bg-green-50 rounded-2xl border border-green-100"><span class="text-green-700 font-bold text-xs">S:</span> <span class="text-[10px] block mt-1">Khích lệ, phần thưởng, công nhận.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EX2 PRACTICE -->
+            <div id="sub-ex2-practice" class="hidden space-y-8">
+                <div class="glass-card rounded-[2.5rem] p-10 shadow-sm border-t-8 border-blue-500 space-y-8">
+                    <div class="flex items-center space-x-4 border-b pb-6 border-slate-100">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Chủ đề bài giảng:</span>
+                        <input type="text" id="gloss-topic" class="w-full p-2 bg-transparent border-none focus:ring-0 text-xl font-bold text-blue-600 italic" placeholder="VD: Đào tạo Hair Restore cho NV mới...">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <textarea id="gloss-g" class="p-4 rounded-2xl bg-red-50/30 input-focus text-xs border-none h-40 shadow-inner" placeholder="G - Attention"></textarea>
+                        <textarea id="gloss-l" class="p-4 rounded-2xl bg-orange-50/30 input-focus text-xs border-none h-40 shadow-inner" placeholder="L - Link"></textarea>
+                        <textarea id="gloss-o" class="p-4 rounded-2xl bg-blue-50/30 input-focus text-xs border-none h-40 shadow-inner" placeholder="O - Outcomes"></textarea>
+                        <textarea id="gloss-s1" class="p-4 rounded-2xl bg-purple-50/30 input-focus text-xs border-none h-40 shadow-inner" placeholder="S - Structure"></textarea>
+                        <textarea id="gloss-s2" class="p-4 rounded-2xl bg-green-50/30 input-focus text-xs border-none h-40 shadow-inner" placeholder="S - Stimulate"></textarea>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-10 pt-8 border-t border-slate-100">
+                        <div class="text-center space-y-4">
+                            <div id="timer2-display" class="text-6xl font-black font-mono text-slate-800 tracking-tighter">05:00</div>
+                            <button onclick="toggleTimer(300, 'timer2')" id="timer2-btn" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold uppercase text-xs tracking-widest shadow-xl active:scale-95 transition-all">Start 5m</button>
+                        </div>
+                        <div class="md:col-span-2 space-y-4">
+                            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Kịch bản chi tiết & Phản hồi</h3>
+                            <textarea id="feedback2" class="w-full p-6 rounded-[2rem] bg-white border border-blue-100 input-focus italic text-slate-600 leading-relaxed text-sm shadow-sm h-48" placeholder="Hãy viết chính xác những gì bạn sẽ nói với nhân viên..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BÀI TẬP 3: FISHBOWL (DIỄN) -->
+        <main id="tab-ex3" class="hidden space-y-6 fade-in">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-black text-purple-600 uppercase italic tracking-tighter">Đạo Diễn Tình Huống</h1>
+                <p class="text-slate-500 text-sm">Phản hồi bằng dữ liệu • Kỹ thuật Bể cá (Fishbowl)</p>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="bg-slate-200 p-1 rounded-xl flex space-x-1 shadow-inner">
+                    <button onclick="switchSubTab('ex3', 'info')" id="btn-ex3-info" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase sub-tab-active">Hướng dẫn & Tình huống</button>
+                    <button onclick="switchSubTab('ex3', 'practice')" id="btn-ex3-practice" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase text-slate-600">Thực hành quan sát</button>
+                </div>
+            </div>
+
+            <!-- EX3 INFO -->
+            <div id="sub-ex3-info" class="space-y-8">
+                <section class="trainer-section rounded-[2rem] p-8 space-y-6 shadow-sm">
+                    <div class="trainer-tag">Director's Script</div>
+                    <div class="grid md:grid-cols-2 gap-10 text-sm text-slate-600 leading-relaxed">
+                        <div class="space-y-4">
+                            <p><strong>Khởi động:</strong> Chuyển từ "Giám khảo" sang "Đạo diễn". "Đạo diễn thì phải viết kịch bản, bối cảnh, và trang bị áo giáp cho diễn viên."</p>
+                            <p><strong>Kỹ thuật Fishbowl:</strong> Người quan sát tắt mic/cam (Zoom) hoặc ngồi vòng tròn (Offline). Chỉ 2 người diễn mở mic.</p>
+                            <p><strong>WWW & EBI:</strong> Khen dựa trên sự thật (WWW) - Chỉ 1 điểm sửa đổi (EBI).</p>
+                        </div>
+                        <div class="bg-purple-900 rounded-[2rem] p-6 text-purple-100 text-[11px] space-y-4 shadow-xl">
+                            <p class="font-bold border-b border-purple-700 pb-2 uppercase tracking-widest text-purple-300 italic">Xử lý tình huống Master Trainer</p>
+                            <p>• <strong>Khách đánh đố:</strong> "Cảm ơn khách hàng diễn nhập tâm, hãy nương nhẹ một chút để đồng đội có cơ hội nhé."</p>
+                            <p>• <strong>Quản lý chê gay gắt:</strong> "Chị A rất tâm huyết. Vậy nhìn Rubric, để đạt mức 3 bạn ấy cần sửa câu nói nào ở Mở đầu?"</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="example-box p-8 space-y-6">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-4">Từ điển hành vi (Mức độ thấu cảm)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-red-50 rounded-2xl border border-red-100 space-y-2">
+                            <span class="text-[9px] font-black text-red-600 uppercase">Mức 1: Người mới</span>
+                            <p class="text-[11px] text-slate-600 italic">"Chị rụng tóc thì dùng cái này tốt lắm chị ạ."</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100 space-y-2">
+                            <span class="text-[9px] font-black text-blue-600 uppercase">Mức 3: Đạt chuẩn</span>
+                            <p class="text-[11px] text-slate-600 italic">"Chị bị rụng lâu chưa? Chị đã dùng loại nào rồi ạ?"</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-2xl border border-green-100 space-y-2">
+                            <span class="text-[9px] font-black text-green-600 uppercase">Mức 5: Chuyên gia</span>
+                            <p class="text-[11px] text-slate-600 italic">"Nhìn tóc chị mỏng đi em rất hiểu cảm giác xót ruột, chắc chị cũng mệt mỏi và tốn kém lắm rồi phải không ạ?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EX3 PRACTICE -->
+            <div id="sub-ex3-practice" class="hidden space-y-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Scenario Card -->
+                    <div class="glass-card rounded-[2rem] p-6 space-y-5 border-t-8 border-purple-500 shadow-lg">
+                        <div class="bg-purple-100 text-purple-700 font-black text-[10px] px-3 py-1 rounded-full w-fit uppercase">Scenario Card</div>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-slate-800 text-sm italic">Hair Restore Advanced</h3>
+                            <p class="text-[10px] text-slate-500 italic leading-relaxed bg-slate-50 p-4 rounded-xl border">"Chị khách 40 tuổi, rụng tóc hói đường ngôi sau sinh bé thứ 2, tốn rất nhiều tiền không đỡ. Đang gắt gỏng và mất niềm tin."</p>
+                            <p class="text-[10px] font-bold text-purple-600 uppercase">Nhiệm vụ NV:</p>
+                            <p class="text-[10px] text-slate-600 leading-relaxed italic">3 phút tiếp cận, đồng cảm nỗi thất vọng, thuyết phục mở lòng. Không ép mua ngay.</p>
+                        </div>
+                        <div class="text-center pt-4 border-t border-slate-100">
+                            <div id="timer3-display" class="text-5xl font-black font-mono text-slate-800 mb-4 tracking-tighter">03:00</div>
+                            <button onclick="toggleTimer(180, 'timer3')" id="timer3-btn" class="w-full bg-purple-600 text-white py-4 rounded-xl font-bold uppercase text-[10px] tracking-widest shadow-xl active:scale-95 transition-all">Bấm "DIỄN!"</button>
+                        </div>
+                    </div>
+
+                    <!-- Rubric -->
+                    <div class="md:col-span-2 glass-card rounded-[2rem] p-8 border-2 border-slate-100 shadow-sm overflow-x-auto">
+                        <table class="w-full text-[10px] border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-500 uppercase tracking-tighter">
+                                    <th class="p-3 border text-left w-1/4">Tiêu chí</th>
+                                    <th class="p-3 border text-center">Mức 1 (Kèm cặp)</th>
+                                    <th class="p-3 border text-center">Mức 3 (Đạt chuẩn)</th>
+                                    <th class="p-3 border text-center">Mức 5 (Chuyên gia)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rubric-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="practice-box grid md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-green-600 uppercase tracking-widest">WWW (What Went Well) - Điểm tốt</label>
+                        <textarea id="feedback-www" class="w-full p-4 rounded-xl bg-green-50/30 input-focus text-xs italic border-none shadow-inner h-32" placeholder="Khen ngợi dựa trên sự thật Rubric..."></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-purple-600 uppercase tracking-widest">EBI (Even Better If) - Điểm cần sửa</label>
+                        <textarea id="feedback-ebi" class="w-full p-4 rounded-xl bg-purple-50/30 input-focus text-xs italic border-none shadow-inner h-32" placeholder="Chỉ ra đúng 1 hành động cần điều chỉnh ngay..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BÀI TẬP 4: JIT (CHỈ VIỆC) -->
+        <main id="tab-ex4" class="hidden space-y-6 fade-in">
+            <div class="text-center space-y-2">
+                <h1 class="text-3xl font-black text-indigo-600 uppercase italic tracking-tighter">Nghệ Thuật "Cầm Tay Chỉ Việc"</h1>
+                <p class="text-slate-500 text-sm">Job Instruction Training (JIT) • Bẻ nhỏ sự hiển nhiên</p>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="bg-slate-200 p-1 rounded-xl flex space-x-1 shadow-inner">
+                    <button onclick="switchSubTab('ex4', 'info')" id="btn-ex4-info" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase sub-tab-active">Phương pháp & Ví dụ</button>
+                    <button onclick="switchSubTab('ex4', 'practice')" id="btn-ex4-practice" class="px-5 py-2 rounded-lg text-[10px] font-black uppercase text-slate-600">Thực hành Breakdown</button>
+                </div>
+            </div>
+
+            <!-- EX4 INFO -->
+            <div id="sub-ex4-info" class="space-y-8">
+                <section class="trainer-section rounded-[2.5rem] p-10 space-y-8 shadow-sm">
+                    <div class="trainer-tag">Kịch bản điều phối</div>
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div class="space-y-4 text-sm text-slate-600 italic">
+                            <p><strong>Nỗi đau:</strong> Khi đã làm một việc 100 lần, nó thành bản năng. Nhưng với nhân viên mới, đó là cả một sự căng thẳng. Sự lóng ngóng của họ đôi khi làm chúng ta mất kiên nhẫn.</p>
+                            <p class="font-bold text-indigo-600">"Hôm nay, chúng ta học cách chậm lại một nhịp, bẻ nhỏ sự hiển nhiên của mình ra để truyền nghề thấu cảm nhất."</p>
+                        </div>
+                        <div class="bg-indigo-900 rounded-[2rem] p-8 text-indigo-100 text-[11px] space-y-4 shadow-2xl relative overflow-hidden">
+                            <p class="font-bold border-b border-indigo-700 pb-3 uppercase tracking-widest text-indigo-300 italic">Pocket Card: 4 Bước JIT</p>
+                            <p><strong>B1. Prepare (Chuẩn bị):</strong> Đứng cùng góc nhìn. Nêu tên thao tác. Giúp họ thoải mái.</p>
+                            <p><strong>B2. Present (Trình bày):</strong> Làm chậm, rõ ràng. Nhấn mạnh CÁC ĐIỂM THEN CHỐT.</p>
+                            <p><strong>B3. Try Out (Làm thử):</strong> Lần 1 im lặng. Lần 2 tự giải thích điểm then chốt. Sửa lỗi nhẹ nhàng.</p>
+                            <p><strong>B4. Follow Up (Theo dõi):</strong> Buông tay có kiểm soát. Hỗ trợ ngay bên cạnh.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="example-box p-10 space-y-6">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b pb-4">Ví dụ Job Breakdown (Pha sữa Biostime)</h3>
+                    <div class="overflow-x-auto rounded-[1.5rem] border border-slate-100 shadow-sm">
+                        <table class="w-full text-[10px] border-collapse bg-white">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-500 uppercase tracking-tighter">
+                                    <th class="p-4 border text-left w-1/4">Các bước chính</th>
+                                    <th class="p-4 border text-left w-1/3">Điểm then chốt (Key Points)</th>
+                                    <th class="p-4 border text-left w-1/3">Lý do</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-4 border font-bold">1. Sát khuẩn tay & Chuẩn bị</td>
+                                    <td class="p-4 border italic">Lau tay bằng cồn trước mặt khách.</td>
+                                    <td class="p-4 border text-slate-400">Tạo tin tưởng tuyệt đối về vệ sinh.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 border font-bold">2. Đong nước ấm vào cốc</td>
+                                    <td class="p-4 border italic">Nước 40 độ, đổ nước trước sữa sau.</td>
+                                    <td class="p-4 border text-slate-400">Tránh vón cục ở đáy, sữa tan đều.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 border font-bold">3. Gạt thìa sữa chuẩn</td>
+                                    <td class="p-4 border italic">Gạt bằng dụng cụ, tay không chạm bột.</td>
+                                    <td class="p-4 border text-slate-400">Đảm bảo đúng định lượng & vệ sinh.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 border font-bold">4. Khuấy & Trao khách</td>
+                                    <td class="p-4 border italic">Khuấy 1 chiều, trao bằng 2 tay, mắt cười.</td>
+                                    <td class="p-4 border text-slate-400">Thể hiện dịch vụ từ tâm.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EX4 PRACTICE -->
+            <div id="sub-ex4-practice" class="hidden space-y-8">
+                <section class="practice-box space-y-8 border-t-8 border-indigo-600 p-10">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-4">
+                        <div class="space-y-1">
+                            <h2 class="text-xl font-black text-slate-800 uppercase tracking-tight">Job Breakdown Sheet</h2>
+                            <p class="text-[10px] text-slate-400 italic">Bẻ nhỏ các bước thao tác trước khi huấn luyện thực tế</p>
+                        </div>
+                        <div class="w-full md:max-w-md bg-slate-50 p-4 rounded-2xl flex flex-col space-y-2 border border-slate-100">
+                            <input type="text" id="jit-job-name" class="bg-transparent border-none focus:ring-0 text-sm font-bold text-indigo-700 w-full" placeholder="Tên công việc cần chỉ (VD: Lên đơn hàng)...">
+                            <input type="text" id="jit-tools" class="bg-transparent border-none focus:ring-0 text-[10px] text-slate-400 w-full italic" placeholder="Dụng cụ cần chuẩn bị (VD: Máy POS, Hóa đơn)...">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-[1.5rem] border border-indigo-100 shadow-inner">
+                        <table class="w-full text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-indigo-600 text-white uppercase text-[9px] font-black tracking-widest">
+                                    <th class="p-4 border border-indigo-700 w-1/4">Các bước chính</th>
+                                    <th class="p-4 border border-indigo-700 w-1/3">Điểm then chốt</th>
+                                    <th class="p-4 border border-indigo-700 w-1/3">Lý do</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white">
+                                    <td class="p-1 border"><textarea id="jit-step-1" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3" placeholder="Làm cái gì?..."></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-key-1" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3" placeholder="Làm thế nào cho đúng?..."></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-reason-1" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3" placeholder="Tại sao?..."></textarea></td>
+                                </tr>
+                                <tr class="bg-slate-50/50">
+                                    <td class="p-1 border"><textarea id="jit-step-2" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-key-2" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-reason-2" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="p-1 border"><textarea id="jit-step-3" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-key-3" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-reason-3" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                </tr>
+                                <tr class="bg-slate-50/50">
+                                    <td class="p-1 border"><textarea id="jit-step-4" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-key-4" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                    <td class="p-1 border"><textarea id="jit-reason-4" class="w-full p-4 bg-transparent border-none italic text-sm" rows="3"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <div class="grid md:grid-cols-3 gap-10 pb-12">
+                    <div class="md:col-span-1 glass-card rounded-[3rem] p-10 text-center space-y-6 shadow-2xl border-2 border-indigo-50 flex flex-col justify-center">
+                        <div id="timer4-display" class="text-7xl font-black font-mono text-slate-800 tracking-tighter">10:00</div>
+                        <button onclick="toggleTimer(600, 'timer4')" id="timer4-btn" class="w-full bg-indigo-600 text-white py-5 rounded-[2rem] font-black uppercase text-xs tracking-widest shadow-xl shadow-indigo-100 active:scale-95 transition-all">Start 10m Practice</button>
+                    </div>
+                    <div class="md:col-span-2 glass-card rounded-[3rem] p-10 bg-indigo-50/20 border border-indigo-100 flex items-center justify-center text-center">
+                        <p class="text-xs text-indigo-900 font-bold italic leading-relaxed">"Ghi chú Master Trainer: Bí quyết của JIT không nằm ở việc bạn điêu luyện ra sao, mà ở việc bạn tìm ra ĐIỂM THEN CHỐT giúp nhân viên làm việc nhanh và an toàn nhất."</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center py-16 border-t border-slate-100 opacity-40">
+            <p class="text-[10px] text-slate-400 uppercase tracking-[0.6em] font-black italic">The Art of Touching • Master Series • 2024</p>
+        </footer>
+
+        <!-- Global Modal -->
+        <div id="modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center z-[100] p-4 backdrop-blur-md">
+            <div class="bg-white rounded-[3.5rem] p-12 max-w-sm w-full text-center shadow-2xl scale-95 transition-all duration-300">
+                <div id="modal-icon" class="w-24 h-24 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 id="modal-title" class="text-3xl font-black text-slate-800 mb-4 tracking-tighter italic uppercase">Xong!</h3>
+                <p id="modal-msg" class="text-slate-500 text-sm mb-10 leading-relaxed italic"></p>
+                <button onclick="closeModal()" class="w-full bg-slate-900 text-white py-6 rounded-[2rem] font-black hover:bg-slate-800 transition-all uppercase tracking-[0.2em] active:scale-95 shadow-2xl shadow-slate-300">Quay lại đạo diễn</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // UI GLOBAL CONTROLS
+        window.switchTab = (tab) => {
+            ['ex1', 'ex2', 'ex3', 'ex4'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`btn-${t}`);
+                if (el) el.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+            const activeTab = document.getElementById(`tab-${tab}`);
+            const activeBtn = document.getElementById(`btn-${tab}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('text-slate-400');
+            }
+        };
+
+        window.switchSubTab = (mainTab, subTab) => {
+            ['info', 'practice'].forEach(t => {
+                const el = document.getElementById(`sub-${mainTab}-${t}`);
+                const btn = document.getElementById(`btn-${mainTab}-${t}`);
+                if (el) el.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('sub-tab-active');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+            const activeSub = document.getElementById(`sub-${mainTab}-${subTab}`);
+            const activeSubBtn = document.getElementById(`btn-${mainTab}-${subTab}`);
+            if (activeSub) activeSub.classList.remove('hidden');
+            if (activeSubBtn) {
+                activeSubBtn.classList.add('sub-tab-active');
+                activeSubBtn.classList.remove('text-slate-600');
+            }
+        };
+
+        let timers = { 
+            timer1: { id: null, left: 30 }, 
+            timer2: { id: null, left: 300 }, 
+            timer3: { id: null, left: 180 },
+            timer4: { id: null, left: 600 }
+        };
+
+        window.toggleTimer = (total, key) => {
+            const btn = document.getElementById(`${key}-btn`);
+            if (timers[key].id) { 
+                clearInterval(timers[key].id); 
+                timers[key].id = null; 
+                btn.innerText = "Tiếp tục"; 
+            } else {
+                btn.innerText = "Tạm dừng";
+                timers[key].id = setInterval(() => {
+                    timers[key].left--;
+                    updateTimerUI(key);
+                    if (timers[key].left <= 0) {
+                        clearInterval(timers[key].id); 
+                        timers[key].id = null; 
+                        btn.innerText = "Hoàn tất";
+                        showModal("Cắt!", `Phiên thực hành đã kết thúc. Hãy đảm bảo tinh thần thấu cảm được truyền tải trọn vẹn nhất!`);
+                    }
+                }, 1000);
+            }
+        };
+
+        const updateTimerUI = (key) => {
+            const left = timers[key].left; 
+            const min = Math.floor(left / 60); 
+            const sec = left % 60;
+            const display = document.getElementById(`${key}-display`);
+            if (display) {
+                display.innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
+                if (left <= 30) display.classList.add('timer-low'); else display.classList.remove('timer-low');
+            }
+        };
+
+        window.closeModal = () => document.getElementById('modal').classList.replace('flex', 'hidden');
+        function showModal(t, m) { document.getElementById('modal-title').innerText = t; document.getElementById('modal-msg').innerText = m; document.getElementById('modal').classList.replace('hidden', 'flex'); }
+        function debounce(f, w) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => f(...a), w); }; }
+
+        // FIREBASE LOGIC
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'workshop-master-v10';
+        let userId = null;
+        let db, auth;
+
+        const inputIds = [
+            'fab-feature', 'fab-advantage', 'fab-benefit', 'script1',
+            'gloss-topic', 'gloss-g', 'gloss-l', 'gloss-o', 'gloss-s1', 'gloss-s2', 'feedback2',
+            'feedback-www', 'feedback-ebi', 'jit-tools',
+            'jit-job-name', 'jit-step-1', 'jit-key-1', 'jit-reason-1',
+            'jit-step-2', 'jit-key-2', 'jit-reason-2', 'jit-step-3', 'jit-key-3', 'jit-reason-3',
+            'jit-step-4', 'jit-key-4', 'jit-reason-4'
+        ];
+
+        const rubricData = [
+            { id: 1, title: '1. Mở đầu / Thiện cảm', m1: 'Thiếu tương tác, đi thẳng vào bán.', m3: 'Chào lịch sự, đúng quy trình.', m5: 'Tạo tin cậy & đồng cảm ngay.' },
+            { id: 2, title: '2. Khám phá nhu cầu', m1: 'Tự giả định, không đặt câu hỏi.', m3: 'Hỏi câu hỏi tiêu chuẩn.', m5: 'Phân tích sâu thấu hiểu nỗi đau.' },
+            { id: 3, title: '3. Giải pháp sản phẩm', m1: 'Máy móc liệt kê tính năng hóa.', m3: 'Liên kết tính năng với lợi ích.', m5: 'Giải pháp may đo đúng nỗi lo.' },
+            { id: 4, title: '4. Xử lý từ chối', m1: 'Tranh luận hoặc lờ khách.', m3: 'Giải đáp chính xác kịch bản.', m5: 'Biến lo ngại thành cơ hội đồng cảm.' },
+            { id: 5, title: '5. Chốt sale / Cam kết', m1: 'Kết thúc mờ nhạt.', m3: 'Đề nghị mua hàng rõ ràng.', m5: 'Chốt tự tin, cam kết đồng hành.' }
+        ];
+
+        const init = async () => {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                if (typeof __initial_auth_token !== 'undefined') { await signInWithCustomToken(auth, __initial_auth_token); } else { await signInAnonymously(auth); }
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        document.getElementById('user-info').innerText = `MASTER_CONSOLE_ID: ${userId}`;
+                        renderRubric(); loadAllData(); setupAutoSave();
+                    }
+                });
+            } catch (e) {
+                console.warn("Restricted Env - UI Ready");
+                renderRubric();
+            }
+        };
+
+        const renderRubric = () => {
+            const body = document.getElementById('rubric-body');
+            if (body) {
+                body.innerHTML = rubricData.map(row => `
+                    <tr class="border-b">
+                        <td class="p-3 border font-bold bg-slate-50/50 text-[10px]">${row.title}</td>
+                        <td class="p-3 border rubric-cell text-center" id="rubric-${row.id}-1" onclick="selectRubric(${row.id}, 1)">${row.m1}</td>
+                        <td class="p-3 border rubric-cell text-center" id="rubric-${row.id}-3" onclick="selectRubric(${row.id}, 3)">${row.m3}</td>
+                        <td class="p-3 border rubric-cell text-center" id="rubric-${row.id}-5" onclick="selectRubric(${row.id}, 5)">${row.m5}</td>
+                    </tr>
+                `).join('');
+            }
+        };
+
+        window.selectRubric = async (rowId, level) => {
+            [1, 3, 5].forEach(l => { document.getElementById(`rubric-${rowId}-${l}`).classList.remove('rubric-active'); });
+            document.getElementById(`rubric-${rowId}-${level}`).classList.add('rubric-active');
+            if (db && userId) {
+                const scoresKey = `rubric_scores`;
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'data', 'workshop_main'));
+                const scores = (snap.exists() ? snap.data().rubric_scores : {}) || {};
+                scores[rowId] = level;
+                await setDoc(doc(db, 'artifacts', appId, 'users', userId, 'data', 'workshop_main'), { rubric_scores: scores }, { merge: true });
+            }
+        };
+
+        const loadAllData = async () => {
+            if (!db || !userId) return;
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'data', 'workshop_main'));
+            if (snap.exists()) {
+                const data = snap.data();
+                inputIds.forEach(id => { const el = document.getElementById(id); if (el && data[id] !== undefined) el.value = data[id]; });
+                if (data.rubric_scores) { Object.entries(data.rubric_scores).forEach(([id, level]) => { const cell = document.getElementById(`rubric-${id}-${level}`); if (cell) cell.classList.add('rubric-active'); }); }
+            }
+        };
+
+        const setupAutoSave = () => {
+            inputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', debounce(async () => {
+                        if (!db || !userId) return;
+                        const data = {};
+                        inputIds.forEach(i => { const inputEl = document.getElementById(i); if (inputEl) data[i] = inputEl.value; });
+                        await setDoc(doc(db, 'artifacts', appId, 'users', userId, 'data', 'workshop_main'), data, { merge: true });
+                        const status = document.getElementById('save-status-ex1');
+                        if (status) { status.style.opacity = '1'; setTimeout(() => status.style.opacity = '0', 2000); }
+                    }, 1000));
+                }
+            });
+        };
+
+        init();
+    </script>
+</body>
+</html>
